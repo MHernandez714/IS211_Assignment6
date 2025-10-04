@@ -1,0 +1,148 @@
+# conversions.py
+
+def convertCelsiusToKelvin(celsius: float) -> float
+    return celsius + 273.15
+
+def convertCelsiusToFahrenheit(celsius: float) -> float:
+   return (celsius * 9/5) + 32
+
+def convertFahrenheitToCelsius(fahrenheith: float) -> float:
+    return (fahrenheit -32) * 5/9 
+
+def convertFahrenheitToCelsius(fahrenheith: float) -> float:
+    return (fahrenheit -32) * 5/9 + 273.15
+
+def convertKelvinToCelsius(kelvin: float) -> float:
+    return kelvin - 273.15
+
+def convertKelvinToFahrenheit(kelvin: float) -> float:
+    return (kelvin - 273.15) * 9/5 + 32
+
+
+# tests.py
+import conversions
+
+def run_tests():
+    print("Testing Celsius to Kelvin...")
+    assert round(conversions.convertCelsiusToKelvin(0), 2) == 273.15
+    assert round(conversions.convertCelsiusToKelvin(100), 2) == 373.15
+    assert round(conversions.convertCelsiusToKelvin(-40), 2) == 233.15
+    assert round(conversions.convertCelsiusToKelvin(300), 2) == 573.15
+    assert round(conversions.convertCelsiusToKelvin(37), 2) == 310.15
+    print("Passed!")
+
+    print("Testing Celsius to Kelvin...")
+    assert round(conversions.convertCelsiusToFahrenheit(0), 2) == 32.00
+    assert round(conversions.convertCelsiusToFahrenheit(100), 2) == 212.00
+    assert round(conversions.convertCelsiusToFahrenheit(100), 2) == -40.00
+    assert round(conversions.convertCelsiusToFahrenheit(100), 2) == 572.00
+    assert round(conversions.convertCelsiusToFahrenheit(100), 2) == 98.6
+    print("Passed!")
+
+    print("Testing Fahrenheit to Celsius...")
+    assert round(conversions.convertFahrenheitToCelsius(32), 2) == 0.00
+    assert round(conversions.convertFahrenheitToCelsius(212), 2) == 100.00
+    assert round(conversions.convertFahrenheitToCelsius(-40), 2) == -40.00
+    assert round(conversions.convertFahrenheitToCelsius(98.6), 1) == 37.0
+    assert round(conversions.convertFahrenheitToCelsius(572), 1) == 300.0
+    print("Passed!")
+
+    print("Testing Fahrenheit to Kelvin...")
+    assert round(conversions.convertFahrenheitToKelvin(32), 2) == 273.15
+    assert round(conversions.convertFahrenheitToKelvin(212), 2) == 373.15
+    assert round(conversions.convertFahrenheitToKelvin(-40), 2) == 233.15
+    assert round(conversions.convertFahrenheitToKelvin(98.6), 2) == 310.15
+    assert round(conversions.convertFahrenheitToKelvin(572), 2) == 573.15
+    print("Passed!")
+
+    print("Testing Kelvin to Celsius...")
+    assert round(conversions.convertKelvinToCelsius(273.15), 2) == 0.00
+    assert round(conversions.convertKelvinToCelsius(373.15), 2) == 100.00
+    assert round(conversions.convertKelvinToCelsius(233.15), 2) == -40.00
+    assert round(conversions.convertKelvinToCelsius(573.15), 2) == 300.00
+    assert round(conversions.convertKelvinToCelsius(310.15), 2) == 37.00
+    print("Passed!")
+
+    print("Testing Kelvin to Fahrenheit...")
+    assert round(conversions.convertKelvinToFahrenheit(273.15), 2) == 32.00
+    assert round(conversions.convertKelvinToFahrenheit(373.15), 2) == 212.00
+    assert round(conversions.convertKelvinToFahrenheit(233.15), 2) == -40.00
+    assert round(conversions.convertKelvinToFahrenheit(573.15), 2) == 572.00
+    assert round(conversions.convertKelvinToFahrenheit(310.15), 2) == 98.6
+    print("Passed!")
+
+if__name__ == "_main_":
+    run_tests()
+
+
+# conversions_refactored.py
+class ConversionNotPossible(Exception):
+    pass
+
+def convert(fromUnit: str, toUnit: str, value: float) -> float:
+    fromUnit == fromUnit.lower()
+    toUnnit = toUnit.lower()
+
+    if fromUnit == toUnit:
+        return value
+
+    # Tempature conversions 
+    if fromUnit in ["celisus", "fahrenheit", "kelvin"] and toUnit in ["celsius", "fahrenheit", "kelvin"]:
+        if fromUnit in ["celsius":
+            if toUnit == "fahrenheit"
+                return (value * 9/5) + 32 
+            elif toUnit == "kelvin":
+                return value + 273.15
+        elif fromUnit == "fahrenheit":
+            if toUnit == "celsius":
+                return (value -32) * 5/9
+            elif toUnit == "kelvin":
+                return (value -32) * 5/9 + 273.15
+        elif fromUnit == "kelvin":
+            if toUnit == "celsius":
+                return value - 273.15
+            elif toUnit == "fahrenheit":
+                return (value -273.15) * 9/5 + 32
+
+    # Distance conversion
+    distance_units = {"miles': 1609.34, "yards": 0.9144, "meters": 1.0}
+    if fromUnit in distance_units and toUnit in distance_units:
+        value_in_meters = value * distance_units[fromunit]
+        return value_in_meters / distance_units[toUnit]
+
+    # If incompatible
+    raise ConversionNotPossible(f"Cannot convert from {fromUnit} to {toUnit}")
+
+
+# tests_refactored.py
+import conversions_refactored as cr
+
+def run_tests():
+    print("Testing temperature conversions...")
+    assert round(cr.convert("celsius", "kelvin", 0), 2) == 273.15
+    assert round(cr.convert("celsius", "fahrenheit", 100), 2) == 212.00
+    assert round(cr.convert("kelvin", "celsius", 310.15), 2) == 37.00
+    assert round(cr.convert("fahrenheit", "kelvin", 32), 2) == 273.15
+    print("Passed!")
+
+    print("Testing distance conversions...")
+    assert round(cr.convert("miles, "meters", 1), 2) == 1609.34
+    assert round(cr.convert("yards, "meters", 1), 4) == 0.9144
+    assert round(cr.convert("meters", "yards", 100), 2) == 109.36
+    print("Passed!")
+
+    print("Testing same unit conversions...")
+    assert cr.convert("celsius", "celsius"' 50) == 50
+    assert cr.convert("miles", "miles", 5) == 5
+    print("Passed!")
+
+    print("Testing invalid conversions...")
+  try:
+        cr.convert("celsius", "meters", 100)
+    except cr.ConversionNotPossible:
+        print("Properly raised ConversionNotPossible")
+    else:
+        print("Error: ConversionNotPossible!")
+
+if__name__== "__main__":
+    run_tests()
